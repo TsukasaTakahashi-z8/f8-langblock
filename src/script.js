@@ -45,6 +45,7 @@ function getData() {
     const data = JSON.parse(json);
     return data;
 }
+
 class Canvas {
     constructor() {
         const canvas = document.getElementById("canvas");
@@ -65,7 +66,8 @@ class Canvas {
         this.adp_color = "green"; // adposition
         this.conj_color = "yellowgreen" // coordinating conjuction
         this.intj_color = "purple"; // interjection, symbol
-        this.line_color = "white"; //輪郭
+        this.line_color = "gray"; //輪郭
+        this.text_color = "black";
 
         this.connector_size = 20; //px
 
@@ -82,40 +84,40 @@ class Canvas {
         return width;
     }
 
-    add_noun_block(text, x, y, front_pole_length, rear_pole_length) {
+    add_block(text, x, y, front_pole_length, rear_pole_length, color, shape) {
         this.connector_size; //px
         let pole_height = 30; //px
         if (front_pole_length + rear_pole_length == 0) pole_height = 10;
-        this.ctx.strokeStyle = "gray";
-        this.ctx.fillStyle = this.noun_color;
+        this.ctx.strokeStyle = this.line_color;
+        this.ctx.fillStyle = color;
         this.ctx.font = `${String(this.font_size)}px Ubuntu`;
         const text_size = this.ctx.measureText(text);
-
-        // connector
-        this.ctx.beginPath();
-        this.ctx.moveTo(x + this.text_margin, y);
-        this.ctx.lineTo(x + this.text_margin + this.connector_size, y + this.connector_size - 10);
-        this.ctx.lineTo(x + this.text_margin + this.connector_size, y + this.connector_size);
-        this.ctx.lineTo(x + this.text_margin, y + this.connector_size);
-        this.ctx.closePath();
-        this.ctx.fill();
-
-        // pole
-        this.ctx.fillRect(x - front_pole_length, y + this.connector_size, text_size.width + (this.text_margin * 2) + front_pole_length + rear_pole_length, pole_height)
-
-        //text background
-        this.ctx.fillRect(x, y + this.connector_size + pole_height, text_size.width + (this.text_margin * 2), this.text_margin * 1 + this.font_size)
-
-        // text
-        this.ctx.fillStyle = "black";
-        this.ctx.fillText(text, x + this.text_margin, y + pole_height + this.font_size + this.connector_size);
 
         // block_line 右回り
         this.ctx.beginPath();
         this.ctx.lineWidth = 1.5;
         this.ctx.moveTo(x + this.text_margin, y + this.connector_size);
-        this.ctx.lineTo(x + this.text_margin, y);
-        this.ctx.lineTo(x + this.text_margin + this.connector_size, y + this.connector_size - 10);
+        switch (shape) {
+            case 'S':
+                this.ctx.lineTo(x + this.text_margin, y);
+                this.ctx.lineTo(x + this.text_margin + this.connector_size, y + this.connector_size - 10);
+                break;
+            case 'V':
+                this.ctx.lineTo(x + this.text_margin + (this.connector_size / 2), y);
+                break;
+            case 'O':
+                this.ctx.arc(x + this.text_margin + 10, y + this.connector_size - 10, 10, Math.PI, 0, false)
+                break;
+            case 'C':
+                this.ctx.lineTo(x + this.text_margin, y);
+                this.ctx.lineTo(x + this.text_margin + this.connector_size, y);
+                break;
+            case 'M':
+                this.ctx.lineTo(x + this.text_margin, y);
+                this.ctx.lineTo(x + this.text_margin + (this.connector_size / 2), y + this.connector_size - 10);
+                this.ctx.lineTo(x + this.text_margin + this.connector_size, y);
+                break;
+        }
         this.ctx.lineTo(x + this.text_margin + this.connector_size, y + this.connector_size);
         this.ctx.lineTo(x + text_size.width + (this.text_margin * 2) + rear_pole_length, y + this.connector_size);
         this.ctx.lineTo(x + text_size.width + (this.text_margin * 2) + rear_pole_length, y + this.connector_size + pole_height);
@@ -128,39 +130,21 @@ class Canvas {
         this.ctx.lineTo(x - front_pole_length, y + this.connector_size + pole_height);
         this.ctx.lineTo(x - front_pole_length, y + this.connector_size);
         this.ctx.closePath();
+        this.ctx.fill();
         this.ctx.stroke();
-    }
 
-    add_pron_block(text, x, y, front, rear) {
-
+        // text
+        this.ctx.fillStyle = this.text_color;
+        this.ctx.fillText(text, x + this.text_margin, y + pole_height + this.font_size + this.connector_size);
     }
-    add_adj_block(text, x, y, front, rear) {
-    }
-    add_adv_block(text, x, y, front, rear) {
-    }
-    add_verb_block(text, x, y, front, rear) {
-    }
-    add_adp_block(text, x, y, front, rear) {
-    }
-    add_conj_block(text, x, y, front, rear) {
-    }
-    add_intj_block(text, x, y, front, rear) {
-    }
-
 }
-
 
 
 window.onload = () => {
     const canvas = new Canvas();
-    canvas.add_noun_block("a", 200, 100, 100, 200)
-    /*canvas.pron_color = "red"; //pronoun
-    canvas.adj_color = "yellow"; //adjective
-    canvas.adv_color = "blue"; //adverb
-    canvas.verb_color = "cyan"; // verb
-    canvas.adp_color = "green"; // adposition
-    canvas.conj_color = "yellowgreen" // coordinating conjuction
-    canvas.intj_color = "purple"; // interjection, symbol
-    console.log(getData())
-    */
-};
+    canvas.add_block("I ", 200, 100, 0, 0, canvas.noun_color, "S");
+    canvas.add_block("made", 238, 100, 0, 0, canvas.verb_color, "V");
+    canvas.add_block("him", 345, 100, 0, 0, canvas.noun_color, "O");
+    canvas.add_block("happy", 424, 100, 0, 0, canvas.adj_color, "C");
+    canvas.add_block("yesterday", 539, 100, 0, 0, canvas.adv_color, "M");
+}
