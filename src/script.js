@@ -67,6 +67,8 @@ class Canvas {
         this.intj_color = "purple"; // interjection, symbol
         this.line_color = "white"; //輪郭
 
+        this.connector_size = 20; //px
+
         this.data = getData();
     }
 
@@ -80,65 +82,57 @@ class Canvas {
         return width;
     }
 
-    add_noun_block(text, x, y, front, rear) {
-        const connector_size = 20; //px
-        const front_pole_length = front;
-        const rear_pole_length = rear;
+    add_noun_block(text, x, y, front_pole_length, rear_pole_length) {
+        this.connector_size; //px
         let pole_height = 30; //px
-        if (front + rear == 0) pole_height = 10;
-
+        if (front_pole_length + rear_pole_length == 0) pole_height = 10;
+        this.ctx.strokeStyle = "gray";
+        this.ctx.fillStyle = this.noun_color;
         this.ctx.font = `${String(this.font_size)}px Ubuntu`;
         const text_size = this.ctx.measureText(text);
 
-        this.ctx.strokeStyle = "gray";
-
-        this.ctx.fillStyle = this.noun_color;
-
-        this.ctx.fillRect(x, y + connector_size + pole_height, text_size.width + (this.text_margin * 2), this.text_margin * 1 + this.font_size)
-
-        // pole
-        this.ctx.fillRect(x - front_pole_length, y + connector_size, text_size.width + (this.text_margin * 2) + front_pole_length + rear_pole_length, pole_height)
-
         // connector
-        //this.ctx.fillRect(x + this.text_margin, y, connector_size, connector_size)
         this.ctx.beginPath();
         this.ctx.moveTo(x + this.text_margin, y);
-        this.ctx.lineTo(x + this.text_margin + connector_size, y + connector_size - 10);
-        this.ctx.lineTo(x + this.text_margin + connector_size, y + connector_size);
-        this.ctx.lineTo(x + this.text_margin, y + connector_size);
+        this.ctx.lineTo(x + this.text_margin + this.connector_size, y + this.connector_size - 10);
+        this.ctx.lineTo(x + this.text_margin + this.connector_size, y + this.connector_size);
+        this.ctx.lineTo(x + this.text_margin, y + this.connector_size);
         this.ctx.closePath();
         this.ctx.fill();
-        // connector line
-        this.ctx.beginPath();
-        this.ctx.lineWidth = 1.5;
-        this.ctx.moveTo(x + this.text_margin, y + connector_size);
-        this.ctx.lineTo(x + this.text_margin, y);
-        this.ctx.lineTo(x + this.text_margin + connector_size, y + connector_size - 10);
-        this.ctx.lineTo(x + this.text_margin + connector_size, y + connector_size);
-        this.ctx.stroke();
 
-        // connector_line 右回り
-        this.ctx.beginPath();
-        this.ctx.lineWidth = 1.5;
-        this.ctx.moveTo(x + this.text_margin + connector_size, y + connector_size);
-        this.ctx.lineTo(x + text_size.width + (this.text_margin * 2) + rear_pole_length, y + connector_size);
-        this.ctx.lineTo(x + text_size.width + (this.text_margin * 2) + rear_pole_length, y + connector_size + pole_height);
-        // ここにrear_connector
-        this.ctx.lineTo(x + text_size.width + (this.text_margin * 2), y + connector_size + pole_height);
-        this.ctx.lineTo(x + text_size.width + (this.text_margin * 2), y + connector_size + pole_height + this.font_size + this.text_margin);
-        this.ctx.lineTo(x, y + connector_size + pole_height + this.font_size + this.text_margin);
-        this.ctx.lineTo(x, y + connector_size + pole_height);
-        // ここにfront_connector
-        this.ctx.lineTo(x - front_pole_length, y + connector_size + pole_height);
-        this.ctx.lineTo(x - front_pole_length, y + connector_size);
-        this.ctx.lineTo(x + this.text_margin, y + connector_size);
-        this.ctx.stroke();
+        // pole
+        this.ctx.fillRect(x - front_pole_length, y + this.connector_size, text_size.width + (this.text_margin * 2) + front_pole_length + rear_pole_length, pole_height)
+
+        //text background
+        this.ctx.fillRect(x, y + this.connector_size + pole_height, text_size.width + (this.text_margin * 2), this.text_margin * 1 + this.font_size)
 
         // text
         this.ctx.fillStyle = "black";
-        this.ctx.fillText(text, x + this.text_margin, y + pole_height + this.font_size + connector_size);
+        this.ctx.fillText(text, x + this.text_margin, y + pole_height + this.font_size + this.connector_size);
+
+        // block_line 右回り
+        this.ctx.beginPath();
+        this.ctx.lineWidth = 1.5;
+        this.ctx.moveTo(x + this.text_margin, y + this.connector_size);
+        this.ctx.lineTo(x + this.text_margin, y);
+        this.ctx.lineTo(x + this.text_margin + this.connector_size, y + this.connector_size - 10);
+        this.ctx.lineTo(x + this.text_margin + this.connector_size, y + this.connector_size);
+        this.ctx.lineTo(x + text_size.width + (this.text_margin * 2) + rear_pole_length, y + this.connector_size);
+        this.ctx.lineTo(x + text_size.width + (this.text_margin * 2) + rear_pole_length, y + this.connector_size + pole_height);
+        // ここにrear_connector
+        this.ctx.lineTo(x + text_size.width + (this.text_margin * 2), y + this.connector_size + pole_height);
+        this.ctx.lineTo(x + text_size.width + (this.text_margin * 2), y + this.connector_size + pole_height + this.font_size + this.text_margin);
+        this.ctx.lineTo(x, y + this.connector_size + pole_height + this.font_size + this.text_margin);
+        this.ctx.lineTo(x, y + this.connector_size + pole_height);
+        // ここにfront_connector
+        this.ctx.lineTo(x - front_pole_length, y + this.connector_size + pole_height);
+        this.ctx.lineTo(x - front_pole_length, y + this.connector_size);
+        this.ctx.closePath();
+        this.ctx.stroke();
     }
+
     add_pron_block(text, x, y, front, rear) {
+
     }
     add_adj_block(text, x, y, front, rear) {
     }
@@ -153,74 +147,13 @@ class Canvas {
     add_intj_block(text, x, y, front, rear) {
     }
 
-
-    create_block(text, x, y) {
-        const connector_size = 20; //px
-        const front_pole_length = 100;
-        const rear_pole_length = 20;
-        const pole_height = 30; //px
-
-        this.ctx.font = `${String(this.font_size)}px Ubuntu`;
-        const text_size = this.ctx.measureText(text);
-
-        this.ctx.strokeStyle = "gray";
-
-        this.ctx.fillStyle = this.noun_color;
-
-        this.ctx.fillRect(x, y + connector_size + pole_height, text_size.width + (this.text_margin * 2), this.text_margin * 1 + this.font_size)
-
-        // pole
-        this.ctx.fillRect(x - front_pole_length, y + connector_size, text_size.width + (this.text_margin * 2) + front_pole_length + rear_pole_length, pole_height)
-
-        // connector
-        //this.ctx.fillRect(x + this.text_margin, y, connector_size, connector_size)
-        this.ctx.beginPath();
-        this.ctx.moveTo(x + this.text_margin, y);
-        this.ctx.lineTo(x + this.text_margin + connector_size, y + connector_size - 10);
-        this.ctx.lineTo(x + this.text_margin + connector_size, y + connector_size);
-        this.ctx.lineTo(x + this.text_margin, y + connector_size);
-        this.ctx.closePath();
-        this.ctx.fill();
-        // connector line
-        this.ctx.beginPath();
-        this.ctx.lineWidth = 1.5;
-        this.ctx.moveTo(x + this.text_margin, y + connector_size);
-        this.ctx.lineTo(x + this.text_margin, y);
-        this.ctx.lineTo(x + this.text_margin + connector_size, y + connector_size - 10);
-        this.ctx.lineTo(x + this.text_margin + connector_size, y + connector_size);
-        this.ctx.stroke();
-
-        // connector_line 右回り
-        this.ctx.beginPath();
-        this.ctx.lineWidth = 1.5;
-        this.ctx.moveTo(x + this.text_margin + connector_size, y + connector_size);
-        this.ctx.lineTo(x + text_size.width + (this.text_margin * 2) + rear_pole_length, y + connector_size);
-        this.ctx.lineTo(x + text_size.width + (this.text_margin * 2) + rear_pole_length, y + connector_size + pole_height);
-        // ここにrear_connector
-        this.ctx.lineTo(x + text_size.width + (this.text_margin * 2), y + connector_size + pole_height);
-        this.ctx.lineTo(x + text_size.width + (this.text_margin * 2), y + connector_size + pole_height + this.font_size + this.text_margin);
-        this.ctx.lineTo(x, y + connector_size + pole_height + this.font_size + this.text_margin);
-        this.ctx.lineTo(x, y + connector_size + pole_height);
-        // ここにfront_connector
-        this.ctx.lineTo(x - front_pole_length, y + connector_size + pole_height);
-        this.ctx.lineTo(x - front_pole_length, y + connector_size);
-        this.ctx.lineTo(x + this.text_margin, y + connector_size);
-        this.ctx.stroke();
-
-        // text
-        this.ctx.fillStyle = "black";
-        this.ctx.fillText(text, x + this.text_margin, y + pole_height + this.font_size + connector_size);
-    }
-
 }
 
 
 
 window.onload = () => {
     const canvas = new Canvas();
-    canvas.create_block("pen", 500, 300);
-    //canvas.create_block("a ", 500, 300);
-    canvas.add_noun_block("a", 200, 100, 0, 0)
+    canvas.add_noun_block("a", 200, 100, 100, 200)
     /*canvas.pron_color = "red"; //pronoun
     canvas.adj_color = "yellow"; //adjective
     canvas.adv_color = "blue"; //adverb
