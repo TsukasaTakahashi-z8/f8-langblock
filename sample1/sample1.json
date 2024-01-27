@@ -1,0 +1,114 @@
+{
+    "blocks": {
+        "0": {
+            "text": "",
+            "block_color": "statement",
+            "levels": "1",
+            "block_type": [],
+            "front_connector": [],
+            "front_child": [],
+            "rear_connectors": [],
+            "rear_child": [],
+            "inner_connectors": ["M", "S", "V", "O"],
+            "inner_child": ["1", "2", "2", "2"]
+        },
+        "1": {
+            "text": "If",
+            "pos": "SCONJ",
+            "levels": "1",
+            "block_color": "conj",
+            "block_type": ["M"],
+            "front_connector": [],
+            "front_child": [],
+            "rear_connectors": [],
+            "rear_child": [],
+            "inner_connectors": ["M", "S", "V", "O"],
+            "inner_child": ["1", "2", "2", "2"]
+        },
+        "2": {
+            "text": "but",
+            "pos": "CCONJ",
+            "block_color": "conj",
+            "block_type": ["V"],
+            "levels": "2",
+            "front_connector": [],
+            "front_child": [],
+            "rear_connectors": [],
+            "rear_child": [],
+            "inner_connectors": [
+                ["S", "V", "O", "M"],
+                ["M", "S", "O"]
+            ],
+            "inner_child": [
+                ["S", "V", "O", "M"],
+                ["M", "S", "O"]
+            ]
+        },
+        "3": {
+            "text": "I",
+            "pos": "NOUN",
+            "levels": "1",
+            "block_color": "noun",
+            "block_type": ["S"],
+            "front_connector": [],
+            "front_child": [],
+            "rear_connectors": [],
+            "rear_child": [],
+            "inner_connectors": [],
+            "inner_child": []
+        },
+        "4": {
+            "text": "have known",
+            "pos": "VERB",
+            "levels": "1",
+            "block_color": "verb",
+            "block_type": ["V"],
+            "front_connector": [],
+            "front_child": [],
+            "rear_connectors": [],
+            "rear_child": [],
+            "inner_connectors": [],
+            "inner_child": []
+        },
+        "6": {
+            "text": "about",
+            "pos": "ADP",
+            "levels": "1",
+            "block_color": "adp",
+            "block_type": ["M"],
+            "front_connector": [],
+            "front_child": [],
+            "rear_connectors": ["O"],
+            "rear_child": ["7"],
+            "inner_connectors": [],
+            "inner_child": []
+        },
+        "7": {
+            "text": "party",
+            "pos": "NOUN",
+            "levels": "1",
+            "block_color": "noun",
+            "block_type": ["O"],
+            "front_connector": ["M"],
+            "front_child": ["8"],
+            "rear_connectors": [],
+            "rear_child": [],
+            "inner_connectors": [],
+            "inner_child": []
+        },
+        "8": {
+            "text": "the",
+            "pos": "DET",
+            "levels": "1",
+            "block_color": "noun",
+            "block_type": ["M"],
+            "front_connector": [],
+            "front_child": [],
+            "rear_connectors": [],
+            "rear_child": [],
+            "inner_connectors": [],
+            "inner_child": []
+        },
+        "//comment": "以下略"
+    }
+}
